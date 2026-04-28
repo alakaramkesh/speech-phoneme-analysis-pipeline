@@ -1,0 +1,10 @@
+/config.local
+/tmp
+/cache
+venv/
+__pycache__/
+*.pyc
+
+# Data 
+data/raw/
+data/processed/
