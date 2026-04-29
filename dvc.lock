@@ -24,3 +24,27 @@ stages:
       md5: a5a307daa25e85981dffcb45e452813c
       size: 4359333
       isexec: true
+  extract_acoustics:
+    cmd: pixi run python src/extract_acoustics.py
+    deps:
+    - path: data/processed/phoneme_table.csv
+      hash: md5
+      md5: a5a307daa25e85981dffcb45e452813c
+      size: 4359333
+      isexec: true
+    - path: data/raw
+      hash: md5
+      md5: 7380ae95ffe7df8db69dc5b2ec6b9b4b.dir
+      size: 738308974
+      nfiles: 5929
+    - path: src/extract_acoustics.py
+      hash: md5
+      md5: 42751002840837a8117113be6fc4b538
+      size: 3590
+      isexec: true
+    outs:
+    - path: data/features/features_acoustic.csv
+      hash: md5
+      md5: b766f8a1b7ea322cccd012294e1ed600
+      size: 2741447
+      isexec: true

@@ -7,3 +7,11 @@ stages:
     - src/parse_corpus.py
     outs:
     - data/processed/phoneme_table.csv
+  extract_acoustics:
+    cmd: pixi run python src/extract_acoustics.py
+    deps:
+    - data/processed/phoneme_table.csv
+    - data/raw
+    - src/extract_acoustics.py
+    outs:
+    - data/features/features_acoustic.csv
