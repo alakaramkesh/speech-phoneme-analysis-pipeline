@@ -1,0 +1,9 @@
+stages:
+  parse_corpus:
+    cmd: python src/parse_corpus.py
+    deps:
+    - data/raw
+    - data/raw/metadata.csv
+    - src/parse_corpus.py
+    outs:
+    - data/processed/phoneme_table.csv

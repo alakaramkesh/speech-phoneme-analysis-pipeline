@@ -1,0 +1,13 @@
+[workspace]
+authors = ["Ala Karamkesh <alakaramkesh@gmail.com>"]
+channels = ["conda-forge"]
+name = "AcousticVSneural"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+python = "3.11.*"
+pandas = ">=3.0.2,<4"
+dvc = ">=3.67.1,<4"

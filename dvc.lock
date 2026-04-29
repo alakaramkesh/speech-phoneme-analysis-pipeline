@@ -1,0 +1,26 @@
+schema: '2.0'
+stages:
+  parse_corpus:
+    cmd: python src/parse_corpus.py
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: 7380ae95ffe7df8db69dc5b2ec6b9b4b.dir
+      size: 738308974
+      nfiles: 5929
+    - path: data/raw/metadata.csv
+      hash: md5
+      md5: c1436dcbae5e46962e5db6c7b26f0043
+      size: 580
+      isexec: true
+    - path: src/parse_corpus.py
+      hash: md5
+      md5: 69b2f8d4ef3256f80fd261393f10182c
+      size: 4217
+      isexec: true
+    outs:
+    - path: data/processed/phoneme_table.csv
+      hash: md5
+      md5: a5a307daa25e85981dffcb45e452813c
+      size: 4359333
+      isexec: true
