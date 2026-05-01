@@ -7,4 +7,6 @@ __pycache__/
 
 # Data 
 data/raw/
-data/processed/
+data/processed/# pixi environments
+.pixi/*
+!.pixi/config.toml
