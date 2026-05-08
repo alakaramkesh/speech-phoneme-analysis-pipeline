@@ -22,7 +22,6 @@ def lobanov_normalize(df, formant_col): # applying lobanov norm on one column
         else:
             normalized = (speaker_df[formant_col] - mean_value) / std_value
         normalized_values.append(normalized) # Store normalized values for this speaker
-
     return pd.concat(normalized_values).sort_index() # Merge all normalized values while preserving row order
 
 
