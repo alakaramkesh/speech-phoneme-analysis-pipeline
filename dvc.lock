@@ -39,12 +39,75 @@ stages:
       nfiles: 5929
     - path: src/extract_acoustics.py
       hash: md5
-      md5: 42751002840837a8117113be6fc4b538
-      size: 3590
+      md5: dff03926c0a1ae7a39b5a7dc41b3b7cc
+      size: 4235
       isexec: true
     outs:
     - path: data/features/features_acoustic.csv
       hash: md5
       md5: b766f8a1b7ea322cccd012294e1ed600
       size: 2741447
+      isexec: true
+  extract_neural_whisper:
+    cmd: pixi run python src/extract_neural_whisper.py
+    deps:
+    - path: data/processed/phoneme_table.csv
+      hash: md5
+      md5: a5a307daa25e85981dffcb45e452813c
+      size: 4359333
+      isexec: true
+    - path: params.yaml
+      hash: md5
+      md5: bbed6748a932714f15a9de2da5a41099
+      size: 544
+      isexec: true
+    - path: src/extract_neural_whisper.py
+      hash: md5
+      md5: 1af20a0967d5eecab82b0c4b9cc560ea
+      size: 5263
+      isexec: true
+    outs:
+    - path: data/features/features_whisper_layer20.npz
+      hash: md5
+      md5: fa388117d2ca06c751882a0e84dfbcde
+      size: 92735084
+      isexec: true
+    - path: data/features/features_whisper_layer4.npz
+      hash: md5
+      md5: 1e4afdca4e6d646549eb2a825699cb86
+      size: 92735084
+      isexec: true
+  extract_neural_xlsr:
+    cmd: pixi run python src/extract_neural_xlsr.py
+    deps:
+    - path: data/processed/phoneme_table.csv
+      hash: md5
+      md5: a5a307daa25e85981dffcb45e452813c
+      size: 4359333
+      isexec: true
+    - path: params.yaml
+      hash: md5
+      md5: bbed6748a932714f15a9de2da5a41099
+      size: 544
+      isexec: true
+    - path: src/extract_neural_xlsr.py
+      hash: md5
+      md5: 10afdf5ba291ac93328091a860ee5584
+      size: 5069
+      isexec: true
+    outs:
+    - path: data/features/features_xlsr_layer10.npz
+      hash: md5
+      md5: 9bf3d72dab45fc599b57623578a2a0ec
+      size: 92735124
+      isexec: true
+    - path: data/features/features_xlsr_layer20.npz
+      hash: md5
+      md5: 21558a967065fdb193dda8ef540b606d
+      size: 92735124
+      isexec: true
+    - path: data/features/features_xlsr_layer4.npz
+      hash: md5
+      md5: 9ac623d2d96d78f1b0ae3a9650b08666
+      size: 92735124
       isexec: true

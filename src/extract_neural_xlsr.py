@@ -4,10 +4,10 @@ import pandas as pd
 import torch
 import soundfile as sf
 from tqdm import tqdm
-from transformers import WhisperProcessor, WhisperModel
+from transformers import Wav2Vec2FeatureExtractor, Wav2Vec2Model
 import yaml
 import librosa
-torch.backends.cudnn.benchmark = True
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PARAMS_PATH = os.path.join(BASE_DIR, "params.yaml")
@@ -16,18 +16,16 @@ OUTPUT_DIR = os.path.join(BASE_DIR, "data/features")
 
 with open(PARAMS_PATH, "r") as f:
     params = yaml.safe_load(f)
-# Whisper settings
-MODEL_NAME = params["whisper"]["model_name"]
-LAYERS = params["whisper"]["layers"]
 
-def load_whisper_model(model_name):
-    print("CUDA available:", torch.cuda.is_available())
+# XLS-R settings
+MODEL_NAME = params["xlsr"]["model_name"]
+LAYERS = params["xlsr"]["layers"]
 
-    if torch.cuda.is_available():
-        print("GPU:", torch.cuda.get_device_name(0))
-    # Load Whisper processor and encoder model
-    processor = WhisperProcessor.from_pretrained(model_name)
-    model = WhisperModel.from_pretrained(model_name)
+
+def load_xlsr_model(model_name):
+    # Load XLS-R feature extractor and model
+    processor = Wav2Vec2FeatureExtractor.from_pretrained(model_name)
+    model = Wav2Vec2Model.from_pretrained(model_name)
     # Use GPU if available, otherwise CPU
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)
@@ -38,25 +36,26 @@ def load_whisper_model(model_name):
 def get_hidden_states_for_wav(wav_path, processor, model, device):
     # Load audio file
     audio, sr = sf.read(wav_path)
-    if audio.ndim > 1: # Whisper expects mono audio
+    if audio.ndim > 1:  # XLS-R expects mono audio
         audio = audio.mean(axis=1)
-    if sr != 16000: # Whisper expects 16 kHz audio
+    if sr != 16000:  # XLS-R expects 16 kHz audio
         audio = librosa.resample(audio, orig_sr=sr, target_sr=16000)
         sr = 16000
-    # Prepare audio input for Whisper
+    # Prepare audio input for XLS-R
     inputs = processor(
         audio,
         sampling_rate=sr,
-        return_tensors="pt"
+        return_tensors="pt",
+        padding=True
     )
-    input_features = inputs.input_features.to(device)
-    # Run Whisper encoder and get hidden states from all layers
-    with torch.inference_mode():
-        outputs = model.encoder(
-            input_features,
+    input_values = inputs.input_values.to(device)
+    # Run model and get hidden states from all layers
+    with torch.no_grad():
+        outputs = model(
+            input_values,
             output_hidden_states=True
         )
-    # hidden_states is a list: one tensor per encoder layer
+    # hidden_states is a list: one tensor per transformer layer
     hidden_states = outputs.hidden_states
     # Audio duration in seconds
     audio_duration = len(audio) / sr
@@ -64,23 +63,25 @@ def get_hidden_states_for_wav(wav_path, processor, model, device):
 
 
 def extract_token_embedding(hidden, audio_duration, onset, offset):
-    num_frames = hidden.shape[0] # Number of Whisper time steps
-    frame_duration = audio_duration / num_frames # Approximate duration of one Whisper frame
-    # Convert phoneme time boundaries to Whisper frame indices
+    num_frames = hidden.shape[0]  # Number of XLS-R time steps
+    frame_duration = audio_duration / num_frames  # Approximate duration of one frame
+    # Convert phoneme time boundaries to frame indices
     start_frame = int(onset / frame_duration)
     end_frame = int(offset / frame_duration)
     # Keep indices inside valid range (sanity check)
     start_frame = max(0, min(start_frame, num_frames - 1))
     end_frame = max(start_frame + 1, min(end_frame, num_frames))
-    frames = hidden[start_frame:end_frame] # Select hidden states overlapping with the phoneme
-    embedding = frames.mean(axis=0) # Average-pool across time
+    # Select hidden states overlapping with the phoneme
+    frames = hidden[start_frame:end_frame]
+    # Average-pool across time
+    embedding = frames.mean(axis=0)
     return embedding
 
 
 def main():
-    df = pd.read_csv(INPUT_CSV) # Load phoneme table
-    processor, model, device = load_whisper_model(MODEL_NAME)
-    os.makedirs(OUTPUT_DIR, exist_ok=True) # Create output folder
+    df = pd.read_csv(INPUT_CSV)  # Load phoneme table
+    processor, model, device = load_xlsr_model(MODEL_NAME)
+    os.makedirs(OUTPUT_DIR, exist_ok=True)  # Create output folder
     # Store embeddings separately for each layer
     layer_embeddings = {layer_idx: [] for layer_idx in LAYERS}
     layer_token_ids = {layer_idx: [] for layer_idx in LAYERS}
@@ -120,7 +121,7 @@ def main():
         token_ids = np.array(layer_token_ids[layer_idx])
         output_path = os.path.join(
             OUTPUT_DIR,
-            f"features_whisper_layer{layer_idx}.npz"
+            f"features_xlsr_layer{layer_idx}.npz"
         )
         np.savez(
             output_path,

@@ -1,0 +1,21 @@
+acoustics:
+  input_csv: data/processed/phoneme_table.csv
+  output_csv: data/features/features_acoustic.csv
+  max_formant_female: 5000
+  max_formant_male: 4500
+  vowels: ["a","e","i","o","u","y","ɑ","ɛ","ɔ","œ","ø","ɯ","ɪ","ʊ"]
+  fricatives: ["s","ʃ","z","ʒ","f","v"]
+
+whisper:
+  model_name: openai/whisper-medium
+  layers:
+    - 4
+    - 20
+
+xlsr:
+  model_name: facebook/wav2vec2-large-xlsr-53
+  layers: [4, 10, 20]
+
+normalization:
+  input_csv: data/features/features_acoustic.csv
+  output_csv: data/features/features_acoustic_norm.csv

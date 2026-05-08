@@ -24,3 +24,13 @@ stages:
     outs:
     - data/features/features_whisper_layer20.npz
     - data/features/features_whisper_layer4.npz
+  extract_neural_xlsr:
+    cmd: pixi run python src/extract_neural_xlsr.py
+    deps:
+    - data/processed/phoneme_table.csv
+    - params.yaml
+    - src/extract_neural_xlsr.py
+    outs:
+    - data/features/features_xlsr_layer10.npz
+    - data/features/features_xlsr_layer20.npz
+    - data/features/features_xlsr_layer4.npz
