@@ -10,3 +10,5 @@ data/raw/
 data/processed/# pixi environments
 .pixi/*
 !.pixi/config.toml
+.venv/
+data/

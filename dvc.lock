@@ -58,24 +58,24 @@ stages:
       isexec: true
     - path: params.yaml
       hash: md5
-      md5: bbed6748a932714f15a9de2da5a41099
-      size: 544
+      md5: 68886b88d52a8108c620e4a9bf0def21
+      size: 1192
       isexec: true
     - path: src/extract_neural_whisper.py
       hash: md5
-      md5: 1af20a0967d5eecab82b0c4b9cc560ea
-      size: 5263
+      md5: 7af2639faf75a50acc869bd6bcbb54a4
+      size: 5980
       isexec: true
     outs:
     - path: data/features/features_whisper_layer20.npz
       hash: md5
-      md5: fa388117d2ca06c751882a0e84dfbcde
-      size: 92735084
+      md5: 9e63edc67fb04dcadcb6f342dc7e43aa
+      size: 93549512
       isexec: true
     - path: data/features/features_whisper_layer4.npz
       hash: md5
-      md5: 1e4afdca4e6d646549eb2a825699cb86
-      size: 92735084
+      md5: cd9b2e0ffecd9a71a1464bc995a370f6
+      size: 93549512
       isexec: true
   extract_neural_xlsr:
     cmd: pixi run python src/extract_neural_xlsr.py
@@ -87,27 +87,194 @@ stages:
       isexec: true
     - path: params.yaml
       hash: md5
-      md5: bbed6748a932714f15a9de2da5a41099
-      size: 544
+      md5: 68886b88d52a8108c620e4a9bf0def21
+      size: 1192
       isexec: true
     - path: src/extract_neural_xlsr.py
       hash: md5
-      md5: 10afdf5ba291ac93328091a860ee5584
-      size: 5069
+      md5: 3c225e70438d28ea831d6131b8946574
+      size: 5788
       isexec: true
     outs:
     - path: data/features/features_xlsr_layer10.npz
       hash: md5
-      md5: 9bf3d72dab45fc599b57623578a2a0ec
-      size: 92735124
+      md5: 2bb6e1be895d0ce5f5fef39006ab0355
+      size: 93549552
       isexec: true
     - path: data/features/features_xlsr_layer20.npz
       hash: md5
-      md5: 21558a967065fdb193dda8ef540b606d
-      size: 92735124
+      md5: c35abb2726a87579af8950fc290d0e58
+      size: 93549552
       isexec: true
     - path: data/features/features_xlsr_layer4.npz
       hash: md5
-      md5: 9ac623d2d96d78f1b0ae3a9650b08666
-      size: 92735124
+      md5: bfca46ecd4d81b6709498f2dd0805dd3
+      size: 93549552
+      isexec: true
+  normalize_acoustics:
+    cmd: pixi run python src/normalize_acoustics.py
+    deps:
+    - path: data/features/features_acoustic.csv
+      hash: md5
+      md5: b766f8a1b7ea322cccd012294e1ed600
+      size: 2741447
+      isexec: true
+    - path: src/normalize_acoustics.py
+      hash: md5
+      md5: e625afeb6fd9b06e2c287901e65f5be0
+      size: 1931
+      isexec: true
+    params:
+      params.yaml:
+        normalization:
+          input_csv: data/features/features_acoustic.csv
+          output_csv: data/features/features_acoustic_norm.csv
+    outs:
+    - path: data/features/features_acoustic_norm.csv
+      hash: md5
+      md5: 8fe068adf53721265c0e1917703a4cfe
+      size: 1372452
+      isexec: true
+  descriptive_statistics:
+    cmd: pixi run python src/descriptive_statistics.py
+    deps:
+    - path: data/features/features_acoustic_norm.csv
+      hash: md5
+      md5: 8fe068adf53721265c0e1917703a4cfe
+      size: 1372452
+      isexec: true
+    - path: src/descriptive_statistics.py
+      hash: md5
+      md5: f8bcbac4f2eff421211cb607be58dfb7
+      size: 2979
+      isexec: true
+    params:
+      params.yaml:
+        descriptive_stats:
+          input_csv: data/features/features_acoustic_norm.csv
+          output_csv: results/descriptive_statistics.csv
+    outs:
+    - path: results/descriptive_statistics.csv
+      hash: md5
+      md5: 040792f4f37d629241cae5b4afa03b3c
+      size: 3921
+      isexec: true
+  acoustic_visualizations:
+    cmd: pixi run python src/acoustic_visualizations.py
+    deps:
+    - path: data/features/features_acoustic_norm.csv
+      hash: md5
+      md5: 8fe068adf53721265c0e1917703a4cfe
+      size: 1372452
+      isexec: true
+    - path: src/acoustic_visualizations.py
+      hash: md5
+      md5: 7c967670b7698ab5ef87dcb88359799d
+      size: 4067
+      isexec: true
+    params:
+      params.yaml:
+        plots:
+          input_csv: data/features/features_acoustic_norm.csv
+          vowel_chart_output: results/figures/vowel_chart.png
+          boxplot_output: results/figures/boxplots.png
+          violin_plot_output: results/figures/violin_plots.png
+    outs:
+    - path: results/figures/boxplots.png
+      hash: md5
+      md5: 5ef3ae8b870ea1b2a648c9a7786f7c69
+      size: 192538
+      isexec: true
+    - path: results/figures/violin_plots.png
+      hash: md5
+      md5: 2200c8bb53443e5706d7ffc3212d369d
+      size: 623416
+      isexec: true
+    - path: results/figures/vowel_chart.png
+      hash: md5
+      md5: 640e6e2dab429b118aae79102da608d1
+      size: 140981
+      isexec: true
+  neural_visualizations:
+    cmd: pixi run python src/neural_visualizations.py
+    deps:
+    - path: data/features/features_whisper_layer20.npz
+      hash: md5
+      md5: 9e63edc67fb04dcadcb6f342dc7e43aa
+      size: 93549512
+      isexec: true
+    - path: data/features/features_xlsr_layer20.npz
+      hash: md5
+      md5: c35abb2726a87579af8950fc290d0e58
+      size: 93549552
+      isexec: true
+    - path: params.yaml
+      hash: md5
+      md5: 68886b88d52a8108c620e4a9bf0def21
+      size: 1192
+      isexec: true
+    - path: src/neural_visualizations.py
+      hash: md5
+      md5: d1674bd73c4e6844cfa499327bf6a689
+      size: 5786
+      isexec: true
+    outs:
+    - path: results/figures/whisper_pca.png
+      hash: md5
+      md5: c62b26be85b0540f1729a4a0c00e8ac7
+      size: 1265428
+      isexec: true
+    - path: results/figures/whisper_umap.png
+      hash: md5
+      md5: fd8668e58bb6755c6c8e33cff87c2021
+      size: 857777
+      isexec: true
+    - path: results/figures/xls-r_pca.png
+      hash: md5
+      md5: 4dc2c878633b6e6f1fb3ed886a4cd0f5
+      size: 2373249
+      isexec: true
+    - path: results/figures/xls-r_umap.png
+      hash: md5
+      md5: 480e99d8c5526fba09a628167abcff3d
+      size: 478836
+      isexec: true
+    - path: results/neural_statistics.csv
+      hash: md5
+      md5: 590845989ba5098f2f7c61567e89da72
+      size: 233
+      isexec: true
+  rsm_analysis:
+    cmd: pixi run python src/rsm_analysis.py
+    deps:
+    - path: data/features/features_acoustic_norm.csv
+      hash: md5
+      md5: 8fe068adf53721265c0e1917703a4cfe
+      size: 1372452
+      isexec: true
+    - path: data/features/features_whisper_layer20.npz
+      hash: md5
+      md5: 9e63edc67fb04dcadcb6f342dc7e43aa
+      size: 93549512
+      isexec: true
+    - path: data/features/features_xlsr_layer20.npz
+      hash: md5
+      md5: c35abb2726a87579af8950fc290d0e58
+      size: 93549552
+      isexec: true
+    - path: params.yaml
+      hash: md5
+      md5: 68886b88d52a8108c620e4a9bf0def21
+      size: 1192
+      isexec: true
+    - path: src/rsm_analysis.py
+      hash: md5
+      md5: e4cb4d752e04c5bd9a5bb8aee2751e4c
+      size: 3536
+      isexec: true
+    outs:
+    - path: results/rsm_statistics.csv
+      hash: md5
+      md5: e4d8d77a1c3e3a081b55e808c38c44cc
+      size: 128
       isexec: true

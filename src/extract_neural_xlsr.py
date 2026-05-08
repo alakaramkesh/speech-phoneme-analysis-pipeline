@@ -85,6 +85,10 @@ def main():
     # Store embeddings separately for each layer
     layer_embeddings = {layer_idx: [] for layer_idx in LAYERS}
     layer_token_ids = {layer_idx: [] for layer_idx in LAYERS}
+    layer_labels = {layer_idx: [] for layer_idx in LAYERS}
+    layer_l1 = {layer_idx: [] for layer_idx in LAYERS}
+    layer_gender = {layer_idx: [] for layer_idx in LAYERS}
+    layer_speakers = {layer_idx: [] for layer_idx in LAYERS}
     # Process one wav file at a time for efficiency
     grouped = df.groupby("wav_path")
     for wav_path, group in tqdm(grouped, total=len(grouped)):
@@ -113,6 +117,10 @@ def main():
                     )
                     layer_embeddings[layer_idx].append(emb)
                     layer_token_ids[layer_idx].append(idx)
+                    layer_labels[layer_idx].append(row["label"])
+                    layer_l1[layer_idx].append(row["L1"])
+                    layer_gender[layer_idx].append(row["gender"])
+                    layer_speakers[layer_idx].append(row["speaker_id"])
         except Exception as e:
             print(f"Error processing {wav_path}: {e}")
     # Save one NPZ file per layer
@@ -127,6 +135,10 @@ def main():
             output_path,
             embeddings=embeddings,
             token_ids=token_ids,
+            labels=np.array(layer_labels[layer_idx]),
+            l1=np.array(layer_l1[layer_idx]),
+            gender=np.array(layer_gender[layer_idx]),
+            speakers=np.array(layer_speakers[layer_idx]),
             layer=np.array([layer_idx]),
             model=np.array([MODEL_NAME])
         )

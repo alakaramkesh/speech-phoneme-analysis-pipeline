@@ -5,17 +5,14 @@ acoustics:
   max_formant_male: 4500
   vowels: ["a","e","i","o","u","y","ɑ","ɛ","ɔ","œ","ø","ɯ","ɪ","ʊ"]
   fricatives: ["s","ʃ","z","ʒ","f","v"]
-
 whisper:
   model_name: openai/whisper-medium
   layers:
     - 4
     - 20
-
 xlsr:
   model_name: facebook/wav2vec2-large-xlsr-53
   layers: [4, 10, 20]
-
 normalization:
   input_csv: data/features/features_acoustic.csv
   output_csv: data/features/features_acoustic_norm.csv
@@ -27,3 +24,10 @@ plots:
   vowel_chart_output: results/figures/vowel_chart.png
   boxplot_output: results/figures/boxplots.png
   violin_plot_output: results/figures/violin_plots.png
+neural_analysis:
+  whisper_file: data/features/features_whisper_layer20.npz
+  xlsr_file: data/features/features_xlsr_layer20.npz
+rsm_analysis:
+  acoustic_csv: data/features/features_acoustic_norm.csv
+  whisper_file: data/features/features_whisper_layer20.npz
+  xlsr_file: data/features/features_xlsr_layer20.npz
