@@ -12,3 +12,4 @@ data/processed/# pixi environments
 !.pixi/config.toml
 .venv/
 data/
+results/

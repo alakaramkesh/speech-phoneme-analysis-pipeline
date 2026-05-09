@@ -278,3 +278,42 @@ stages:
       md5: e4d8d77a1c3e3a081b55e808c38c44cc
       size: 128
       isexec: true
+  group_comparisons:
+    cmd: pixi run python src/group_comparisons.py
+    deps:
+    - path: data/features/features_acoustic_norm.csv
+      hash: md5
+      md5: 8fe068adf53721265c0e1917703a4cfe
+      size: 1372452
+      isexec: true
+    - path: data/features/features_whisper_layer20.npz
+      hash: md5
+      md5: 9e63edc67fb04dcadcb6f342dc7e43aa
+      size: 93549512
+      isexec: true
+    - path: data/features/features_xlsr_layer20.npz
+      hash: md5
+      md5: c35abb2726a87579af8950fc290d0e58
+      size: 93549552
+      isexec: true
+    - path: params.yaml
+      hash: md5
+      md5: 68886b88d52a8108c620e4a9bf0def21
+      size: 1192
+      isexec: true
+    - path: src/group_comparisons.py
+      hash: md5
+      md5: f19c9a8080c478aae5287a96a35b01b4
+      size: 6984
+      isexec: true
+    outs:
+    - path: results/acoustic_tests.csv
+      hash: md5
+      md5: d0788324ff0aec13ecb9fd94d1755b04
+      size: 2638
+      isexec: true
+    - path: results/neural_tests.csv
+      hash: md5
+      md5: cef0d966f04c2d6fcd7f757722fc5d18
+      size: 983
+      isexec: true
