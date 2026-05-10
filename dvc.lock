@@ -475,3 +475,145 @@ stages:
       md5: 085fa3a50c96d49d32a3e97f174dbabf
       size: 7436
       isexec: true
+  section9_clustering:
+    cmd: pixi run python src/section9_clustering.py
+    deps:
+    - path: data/features/features_acoustic_norm.csv
+      hash: md5
+      md5: 8fe068adf53721265c0e1917703a4cfe
+      size: 1372452
+      isexec: true
+    - path: data/features/features_whisper_layer20.npz
+      hash: md5
+      md5: 9e63edc67fb04dcadcb6f342dc7e43aa
+      size: 93549512
+      isexec: true
+    - path: data/features/features_xlsr_layer20.npz
+      hash: md5
+      md5: c35abb2726a87579af8950fc290d0e58
+      size: 93549552
+      isexec: true
+    - path: src/section9_clustering.py
+      hash: md5
+      md5: bc38ad6b93e61696fd1d70b33336e590
+      size: 13599
+      isexec: true
+    outs:
+    - path: results/figures/dendrogram_acoustic.png
+      hash: md5
+      md5: 0d4ae4780f5c40a6a906acd07e84b961
+      size: 52671
+      isexec: true
+    - path: results/figures/dendrogram_whisper.png
+      hash: md5
+      md5: 23d16eb4b0fcda27a02274ffd251c1eb
+      size: 54665
+      isexec: true
+    - path: results/figures/dendrogram_xlsr.png
+      hash: md5
+      md5: 20321b73833acf7cdc7900a32b5de9e6
+      size: 53463
+      isexec: true
+    - path: results/figures/speaker_dendrogram_acoustic.png
+      hash: md5
+      md5: ed623d4456e09c8a0ae2009acb61a5c6
+      size: 70850
+      isexec: true
+    - path: results/figures/speaker_dendrogram_whisper.png
+      hash: md5
+      md5: 2229361c968dedbba6284905fa9c4579
+      size: 71415
+      isexec: true
+    - path: results/figures/speaker_dendrogram_xlsr.png
+      hash: md5
+      md5: fdae0df6d7f09aca141b0b30da88d59a
+      size: 68801
+      isexec: true
+    - path: results/section9_phoneme_clusters.csv
+      hash: md5
+      md5: 5c9e5a578d2520dca77469e6869d1c76
+      size: 724
+      isexec: true
+    - path: results/section9_speaker_clustering.csv
+      hash: md5
+      md5: 4b0ddabed31404cd55dbf6394eda4a40
+      size: 160
+      isexec: true
+    - path: results/section9_systematic_phoneme_patterns.csv
+      hash: md5
+      md5: 1ce4b77ed2cd3b2da13872ef65408e98
+      size: 158
+      isexec: true
+    - path: results/section9_vowel_clustering.csv
+      hash: md5
+      md5: 4943e92f4073e933547be6540aef25fe
+      size: 149
+      isexec: true
+  section9_extensions:
+    cmd: pixi run python src/section9_extensions.py
+    deps:
+    - path: data/features/features_acoustic_norm.csv
+      hash: md5
+      md5: 8fe068adf53721265c0e1917703a4cfe
+      size: 1372452
+      isexec: true
+    - path: data/features/features_whisper_layer20.npz
+      hash: md5
+      md5: 9e63edc67fb04dcadcb6f342dc7e43aa
+      size: 93549512
+      isexec: true
+    - path: data/features/features_xlsr_layer20.npz
+      hash: md5
+      md5: c35abb2726a87579af8950fc290d0e58
+      size: 93549552
+      isexec: true
+    - path: src/section9_extensions.py
+      hash: md5
+      md5: 9d989c83b015c87c76c269409ba67e75
+      size: 5721
+      isexec: true
+    outs:
+    - path: results/section9_consonant_vowel_clustering.csv
+      hash: md5
+      md5: ab5b75edc48ee3b3f97f563822c37041
+      size: 88
+      isexec: true
+    - path: results/section9_silhouette_scores.csv
+      hash: md5
+      md5: 3165328be64ca66d2df6a5d20022c1b4
+      size: 374
+      isexec: true
+  section7_mixed_models:
+    cmd: pixi run python src/section7_mixed_models.py
+    deps:
+    - path: data/features/features_acoustic_norm.csv
+      hash: md5
+      md5: 8fe068adf53721265c0e1917703a4cfe
+      size: 1372452
+      isexec: true
+    - path: data/features/features_whisper_layer20.npz
+      hash: md5
+      md5: 9e63edc67fb04dcadcb6f342dc7e43aa
+      size: 93549512
+      isexec: true
+    - path: data/features/features_xlsr_layer20.npz
+      hash: md5
+      md5: c35abb2726a87579af8950fc290d0e58
+      size: 93549552
+      isexec: true
+    - path: src/section7_mixed_models.py
+      hash: md5
+      md5: 206502332269be32eea359078dcc7f81
+      size: 5718
+      isexec: true
+    params:
+      params.yaml:
+        neural_analysis.whisper_file: data/features/features_whisper_layer20.npz
+        neural_analysis.xlsr_file: data/features/features_xlsr_layer20.npz
+        normalization.output_csv: data/features/features_acoustic_norm.csv
+    outs:
+    - path: results/mixed_models
+      hash: md5
+      md5: 1978a20ed580eb62a70576a0ba15d9aa.dir
+      size: 322
+      nfiles: 3
