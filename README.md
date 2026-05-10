@@ -66,6 +66,16 @@ The project uses the Russian–French Interference Corpus available on ORTOLANG:
 
 [https://www.ortolang.fr/market/corpora/ru-fr_interference](https://www.ortolang.fr/market/corpora/ru-fr_interference)
 
+After downloading the corpus manually from ORTOLANG, the raw files should be placed inside:
+
+data/raw/
+
+This directory should contain:
+
+WAV audio files,
+TextGrid annotations,
+metadata.csv.
+
 The corpus contains:
 
 * native French speakers (L1),
