@@ -56,25 +56,26 @@ stages:
       md5: a5a307daa25e85981dffcb45e452813c
       size: 4359333
       isexec: true
-    - path: params.yaml
-      hash: md5
-      md5: 510479851529683f7e73380356eae539
-      size: 1412
-      isexec: true
     - path: src/extract_neural_whisper.py
       hash: md5
       md5: 7af2639faf75a50acc869bd6bcbb54a4
       size: 5980
       isexec: true
+    params:
+      params.yaml:
+        whisper.layers:
+        - 4
+        - 20
+        whisper.model_name: openai/whisper-medium
     outs:
     - path: data/features/features_whisper_layer20.npz
       hash: md5
-      md5: ddf9834bfd7f9c0d6bd0527dfca7c243
+      md5: 9e63edc67fb04dcadcb6f342dc7e43aa
       size: 93549512
       isexec: true
     - path: data/features/features_whisper_layer4.npz
       hash: md5
-      md5: 4f9d240a0826e2acb62d0daafb08331a
+      md5: cd9b2e0ffecd9a71a1464bc995a370f6
       size: 93549512
       isexec: true
   extract_neural_xlsr:
@@ -85,16 +86,18 @@ stages:
       md5: a5a307daa25e85981dffcb45e452813c
       size: 4359333
       isexec: true
-    - path: params.yaml
-      hash: md5
-      md5: 510479851529683f7e73380356eae539
-      size: 1412
-      isexec: true
     - path: src/extract_neural_xlsr.py
       hash: md5
       md5: 3c225e70438d28ea831d6131b8946574
       size: 5788
       isexec: true
+    params:
+      params.yaml:
+        xlsr.layers:
+        - 4
+        - 10
+        - 20
+        xlsr.model_name: facebook/wav2vec2-large-xlsr-53
     outs:
     - path: data/features/features_xlsr_layer10.npz
       hash: md5
@@ -200,7 +203,7 @@ stages:
     deps:
     - path: data/features/features_whisper_layer20.npz
       hash: md5
-      md5: ddf9834bfd7f9c0d6bd0527dfca7c243
+      md5: 9e63edc67fb04dcadcb6f342dc7e43aa
       size: 93549512
       isexec: true
     - path: data/features/features_xlsr_layer20.npz
@@ -210,8 +213,8 @@ stages:
       isexec: true
     - path: params.yaml
       hash: md5
-      md5: 510479851529683f7e73380356eae539
-      size: 1412
+      md5: 692a139c01ea0a615ba1fa4a6cee00c8
+      size: 1514
       isexec: true
     - path: src/neural_visualizations.py
       hash: md5
@@ -221,18 +224,18 @@ stages:
     outs:
     - path: results/figures/whisper_pca.png
       hash: md5
-      md5: 6e96562cdcb2f18c0bfbe5bbc7908a02
-      size: 1265403
+      md5: f96998352bec0f2f2d4c7f875be95990
+      size: 1265358
       isexec: true
     - path: results/figures/whisper_umap.png
       hash: md5
-      md5: b6f8614b3e82e0a7aee58b9e4fe4e0ce
-      size: 818728
+      md5: fd8668e58bb6755c6c8e33cff87c2021
+      size: 857777
       isexec: true
     - path: results/figures/xls-r_pca.png
       hash: md5
-      md5: 417b9638321991f2573d16c3b8e3d7ed
-      size: 2373355
+      md5: a908c94902ab9d304d5785b8924de0e0
+      size: 2373196
       isexec: true
     - path: results/figures/xls-r_umap.png
       hash: md5
@@ -241,8 +244,8 @@ stages:
       isexec: true
     - path: results/neural_statistics.csv
       hash: md5
-      md5: cb1a724780d8655c124ae3b9a8053e2a
-      size: 230
+      md5: 43f81e16e1deb22ccab3d45df7c77b5b
+      size: 234
       isexec: true
   rsm_analysis:
     cmd: pixi run python src/rsm_analysis.py
@@ -254,7 +257,7 @@ stages:
       isexec: true
     - path: data/features/features_whisper_layer20.npz
       hash: md5
-      md5: ddf9834bfd7f9c0d6bd0527dfca7c243
+      md5: 9e63edc67fb04dcadcb6f342dc7e43aa
       size: 93549512
       isexec: true
     - path: data/features/features_xlsr_layer20.npz
@@ -264,8 +267,8 @@ stages:
       isexec: true
     - path: params.yaml
       hash: md5
-      md5: 510479851529683f7e73380356eae539
-      size: 1412
+      md5: 692a139c01ea0a615ba1fa4a6cee00c8
+      size: 1514
       isexec: true
     - path: src/rsm_analysis.py
       hash: md5
@@ -275,7 +278,7 @@ stages:
     outs:
     - path: results/rsm_statistics.csv
       hash: md5
-      md5: 1577a6d8c5391c4d4de80d38f23dc399
+      md5: e4d8d77a1c3e3a081b55e808c38c44cc
       size: 128
       isexec: true
   group_comparisons:
@@ -327,7 +330,7 @@ stages:
       isexec: true
     - path: data/features/features_whisper_layer20.npz
       hash: md5
-      md5: ddf9834bfd7f9c0d6bd0527dfca7c243
+      md5: 9e63edc67fb04dcadcb6f342dc7e43aa
       size: 93549512
       isexec: true
     - path: data/features/features_xlsr_layer20.npz
@@ -353,12 +356,12 @@ stages:
       isexec: true
     - path: results/distances
       hash: md5
-      md5: b7d2385c90c360ae3d255416b5c01457.dir
-      size: 90488
+      md5: ffb2f7fa9e139ddd68892a4391ae7d6a.dir
+      size: 90504
       nfiles: 10
     - path: results/neural_tests.csv
       hash: md5
-      md5: a2d5aa5c69cc757b5bd87a0c5ac42cd5
+      md5: 684e5b6e2bd87ec095d5f48110961b19
       size: 983
       isexec: true
   mixed_models:
@@ -371,7 +374,7 @@ stages:
       isexec: true
     - path: data/features/features_whisper_layer20.npz
       hash: md5
-      md5: ddf9834bfd7f9c0d6bd0527dfca7c243
+      md5: 9e63edc67fb04dcadcb6f342dc7e43aa
       size: 93549512
       isexec: true
     - path: data/features/features_xlsr_layer20.npz
@@ -392,6 +395,83 @@ stages:
     outs:
     - path: results/mixed_models
       hash: md5
-      md5: ccac15373e31edc8f6b798a227f95651.dir
-      size: 323
+      md5: 1978a20ed580eb62a70576a0ba15d9aa.dir
+      size: 322
       nfiles: 3
+  section8_analysis:
+    cmd: pixi run python src/section8_analysis.py
+    deps:
+    - path: data/features/features_acoustic_norm.csv
+      hash: md5
+      md5: 8fe068adf53721265c0e1917703a4cfe
+      size: 1372452
+      isexec: true
+    - path: data/features/features_whisper_layer20.npz
+      hash: md5
+      md5: 9e63edc67fb04dcadcb6f342dc7e43aa
+      size: 93549512
+      isexec: true
+    - path: data/features/features_xlsr_layer20.npz
+      hash: md5
+      md5: c35abb2726a87579af8950fc290d0e58
+      size: 93549552
+      isexec: true
+    - path: src/section8_analysis.py
+      hash: md5
+      md5: e80afc9ff2a3751de8ddd2c911528b9b
+      size: 13451
+      isexec: true
+    params:
+      params.yaml:
+        section8:
+          bootstrap_iterations: 2000
+          random_seed: 42
+          acoustic_rope:
+            low: -0.2
+            high: 0.2
+    outs:
+    - path: results/acoustic_ci_results.csv
+      hash: md5
+      md5: 8acf99d9cb9fb390b4f914dea7d5b41d
+      size: 4711
+      isexec: true
+    - path: results/figures/forest_F1_norm_L1_binary.png
+      hash: md5
+      md5: 1f7d939c1b2209ca57b8e3c4aed97e95
+      size: 52436
+      isexec: true
+    - path: results/figures/forest_F1_norm_L1_binary_gender_binary.png
+      hash: md5
+      md5: aed5a609c95f93a86cc45b0b2c2f9324
+      size: 56813
+      isexec: true
+    - path: results/figures/forest_F2_norm_L1_binary.png
+      hash: md5
+      md5: e3cce0eaa93acfc2cf58dfe5852722f1
+      size: 53951
+      isexec: true
+    - path: results/figures/forest_F2_norm_L1_binary_gender_binary.png
+      hash: md5
+      md5: 34204f700f104f5e10a3eeaaa09bce51
+      size: 62326
+      isexec: true
+    - path: results/figures/forest_neural_whisper.png
+      hash: md5
+      md5: 1804966eb90ab0e4021c0f77c1c6057d
+      size: 62886
+      isexec: true
+    - path: results/figures/forest_neural_xlsr.png
+      hash: md5
+      md5: 8f39dd9dc3ebc8d67046c598ccdadc42
+      size: 64250
+      isexec: true
+    - path: results/neural_ci_results.csv
+      hash: md5
+      md5: e4aa06e097bb4b33332095514c43e3fc
+      size: 2232
+      isexec: true
+    - path: results/section8_rope_summary.csv
+      hash: md5
+      md5: 085fa3a50c96d49d32a3e97f174dbabf
+      size: 7436
+      isexec: true

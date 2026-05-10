@@ -36,3 +36,9 @@ distance_analysis:
   whisper_file: data/features/features_whisper_layer20.npz
   xlsr_file: data/features/features_xlsr_layer20.npz
   output_dir: results/distances
+section8:
+  bootstrap_iterations: 2000
+  random_seed: 42
+  acoustic_rope:
+    low: -0.2
+    high: 0.2
