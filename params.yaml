@@ -31,3 +31,8 @@ rsm_analysis:
   acoustic_csv: data/features/features_acoustic_norm.csv
   whisper_file: data/features/features_whisper_layer20.npz
   xlsr_file: data/features/features_xlsr_layer20.npz
+distance_analysis:
+  acoustic_csv: data/features/features_acoustic_norm.csv
+  whisper_file: data/features/features_whisper_layer20.npz
+  xlsr_file: data/features/features_xlsr_layer20.npz
+  output_dir: results/distances

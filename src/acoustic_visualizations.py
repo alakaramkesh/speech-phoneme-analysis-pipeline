@@ -8,40 +8,22 @@ import yaml
 # Paths
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PARAMS_PATH = os.path.join(BASE_DIR, "params.yaml")
-
 with open(PARAMS_PATH, "r") as f:
     params = yaml.safe_load(f)
-
 INPUT_CSV = os.path.join(BASE_DIR, params["plots"]["input_csv"])
-
-VOWEL_CHART_OUTPUT = os.path.join(
-    BASE_DIR,
-    params["plots"]["vowel_chart_output"]
-)
-
-BOXPLOT_OUTPUT = os.path.join(
-    BASE_DIR,
-    params["plots"]["boxplot_output"]
-)
-VIOLIN_PLOT_OUTPUT = os.path.join(
-    BASE_DIR,
-    params["plots"]["violin_plot_output"]
-)
+VOWEL_CHART_OUTPUT = os.path.join(BASE_DIR,params["plots"]["vowel_chart_output"])
+BOXPLOT_OUTPUT = os.path.join(BASE_DIR,params["plots"]["boxplot_output"])
+VIOLIN_PLOT_OUTPUT = os.path.join(BASE_DIR,params["plots"]["violin_plot_output"])
 
 # Load normalized acoustic features
 # We load the dataframe once and reuse it for all plots
 DF = pd.read_csv(INPUT_CSV)
 
-
 # Create combined speaker group labels
 DF["group"] = DF["L1"] + "/" + DF["gender"]
 GROUP_ORDER = ["L1/f", "L1/m", "L2/f", "L2/m"]
-
-
 # Create figure output directory
 os.makedirs(os.path.dirname(VOWEL_CHART_OUTPUT), exist_ok=True)
-
-
 
 def plot_vowel_chart(df):
 
@@ -73,27 +55,19 @@ def plot_vowel_chart(df):
     # Invert axes following IPA convention
     plt.gca().invert_xaxis()
     plt.gca().invert_yaxis()
-
     plt.title("French vowel space after Lobanov normalization")
     plt.xlabel("F2 normalized")
     plt.ylabel("F1 normalized")
-
     plt.legend(title="Speaker group")
-
     plt.tight_layout()
-
     plt.savefig(VOWEL_CHART_OUTPUT, dpi=300)
-
     print(f"Saved vowel chart to: {VOWEL_CHART_OUTPUT}")
-
     plt.close()
 
 
 def plot_boxplots(df):
-
     # Create two subplots
     fig, axes = plt.subplots(2, 1, figsize=(14, 12))
-
     # F1 boxplot
     sns.boxplot(
         data=df,
@@ -104,7 +78,6 @@ def plot_boxplots(df):
         ax=axes[0],
         showfliers=False
     )
-
     axes[0].set_title("F1 distribution by phoneme and speaker group")
     axes[0].set_xlabel("Phoneme")
     axes[0].set_ylabel("Normalized F1")
@@ -119,17 +92,12 @@ def plot_boxplots(df):
         ax=axes[1],
         showfliers=False
     )
-
     axes[1].set_title("F2 distribution by phoneme and speaker group")
     axes[1].set_xlabel("Phoneme")
     axes[1].set_ylabel("Normalized F2")
-
     plt.tight_layout()
-
     plt.savefig(BOXPLOT_OUTPUT, dpi=300)
-
     print(f"Saved boxplots to: {BOXPLOT_OUTPUT}")
-
     plt.close()
 
 def plot_violin_plots(df):
