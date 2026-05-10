@@ -269,8 +269,8 @@ pixi run dvc status
 ## Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/your-repository.git
-cd your-repository
+git clone https://github.com/alakaramkesh/speech-phoneme-analysis-pipeline.git
+cd speech-phoneme-analysis-pipeline
 ```
 
 ## Install Pixi
