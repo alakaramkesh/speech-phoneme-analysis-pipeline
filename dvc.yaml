@@ -1,6 +1,6 @@
 stages:
   parse_corpus:
-    cmd: python src/parse_corpus.py
+    cmd: pixi run python src/parse_corpus.py
     deps:
     - data/raw
     - data/raw/metadata.csv
